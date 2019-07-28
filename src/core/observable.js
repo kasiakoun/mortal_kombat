@@ -6,7 +6,12 @@ export default class Observable {
     /**
      * @private
      */
-    this.internal.observers = [];
+    this.internal = {
+      /**
+       * @type {any[]}
+       */
+      observers: [],
+    };
   }
 
   /**

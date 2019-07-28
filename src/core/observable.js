@@ -48,8 +48,6 @@ export default class Observable {
    * @param {...*} parameters
    */
   fire(...parameters) {
-    (async () => {
-      this.internal.observers.forEach(func => func(...parameters));
-    })();
+    this.internal.observers.forEach(func => func(...parameters));
   }
 }

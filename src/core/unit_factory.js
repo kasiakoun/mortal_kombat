@@ -1,6 +1,7 @@
 import CollisionDetector from './game_space/collision_detector';
 import Units from './units/units';
 import Cyrax from './units/cyrax';
+import UnitBase from './units/unit_base';
 
 /**
  * Creates units
@@ -14,7 +15,9 @@ export default class UnitFactory {
   }
 
   /**
+   * Creates a unit
    * @param {Units} units
+   * @returns {UnitBase}
    */
   createUnit(units) {
     let unit;
@@ -28,7 +31,7 @@ export default class UnitFactory {
     }
 
     if (unit) {
-      this.collisionDetector.units.push(unit);
+      this.collisionDetector.addUnit(unit);
     }
 
     return unit;

@@ -6,7 +6,12 @@ export default class Observable {
     /**
      * @private
      */
-    this.internal.observers = [];
+    this.internal = {
+      /**
+       * @type {any[]}
+       */
+      observers: [],
+    };
   }
 
   /**
@@ -43,8 +48,6 @@ export default class Observable {
    * @param {...*} parameters
    */
   fire(...parameters) {
-    (async () => {
-      this.internal.observers.forEach(func => func(...parameters));
-    })();
+    this.internal.observers.forEach(func => func(...parameters));
   }
 }

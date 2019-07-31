@@ -11,7 +11,7 @@ export default class UnitBase {
    */
   set position(val) {
     this.internal.position = val;
-    this.internal.positionChanged.fire();
+    this.internal.positionChanged.fire(this);
   }
 
   /**
@@ -30,7 +30,7 @@ export default class UnitBase {
     return this.internal.positionChanged;
   }
 
-  constructor() {
+  constructor(width, height) {
     /**
      * @private
      */
@@ -44,7 +44,7 @@ export default class UnitBase {
        */
       positionChanged: new Observable(),
     };
-    this.width = 0;
-    this.height = 0;
+    this.width = width;
+    this.height = height;
   }
 }

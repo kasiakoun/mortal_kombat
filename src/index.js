@@ -14,21 +14,36 @@ collisionDetector.collided.subscribe((unit1, unit2) => {
   console.log(`(${unit1.position.x}, ${unit1.position.y}), (${unit2.position.x}, ${unit2.position.y})`);
 });
 
-function test() {
-  const x1 = Math.floor(Math.random() * 1000);
-  const y1 = Math.floor(Math.random() * 1000);
-  const x2 = Math.floor(Math.random() * 1000);
-  const y2 = Math.floor(Math.random() * 1000);
+const containerElement = document.createElement('div');
+containerElement.style.position = 'absolute';
+
+const unitElement1 = document.createElement('div');
+unitElement1.style.background = 'teal';
+unitElement1.style.width = `${testUnit1.width}px`;
+unitElement1.style.height = `${testUnit1.height}px`;
+unitElement1.style.position = 'absolute';
+
+const unitElement2 = document.createElement('div');
+unitElement2.style.background = 'purple';
+unitElement2.style.width = `${testUnit2.width}px`;
+unitElement2.style.height = `${testUnit2.height}px`;
+unitElement2.style.position = 'absolute';
+
+containerElement.append(unitElement1, unitElement2);
+document.body.append(containerElement);
+
+setInterval(() => {
+  const x1 = Math.floor(Math.random() * 500);
+  const y1 = Math.floor(Math.random() * 500);
+  const x2 = Math.floor(Math.random() * 500);
+  const y2 = Math.floor(Math.random() * 500);
+
   testUnit1.position = new Point(x1, y1);
   testUnit2.position = new Point(x2, y2);
-}
 
-function sleep(delay) {
-  const start = new Date().getTime();
-  while (new Date().getTime() < start + delay);
-}
+  unitElement1.style.marginLeft = `${x1}px`;
+  unitElement1.style.marginTop = `${y1}px`;
 
-while (true) {
-  test();
-  sleep(300);
-}
+  unitElement2.style.marginLeft = `${x2}px`;
+  unitElement2.style.marginTop = `${y2}px`;
+}, 5000);

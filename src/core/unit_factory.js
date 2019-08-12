@@ -1,7 +1,10 @@
-import CollisionDetector from './game_space/collision_detector';
 import Units from './units/units';
 import Cyrax from './units/cyrax';
-import UnitBase from './units/unit_base';
+
+/**
+ * @typedef {import('./game_space/collision_detector').default} CollisionDetector
+ * @typedef {import('./units/unit_base').default} UnitBase
+ */
 
 /**
  * Creates units

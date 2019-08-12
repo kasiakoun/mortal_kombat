@@ -1,5 +1,8 @@
-import UnitBase from '../units/unit_base';
 import Observable from '../observable';
+
+/**
+ * @typedef {import('./units/unit_base').default} UnitBase
+ */
 
 /**
  * Detects collisions between units

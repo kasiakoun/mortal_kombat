@@ -1,10 +1,11 @@
-# Mortal Combat
+# Mortal Kombat
+
+This project needs to improve different weak points in my developing.
 
 ### Dependencies:
 ```rb
-nodejs v
-npm v
-db v
+node v10.15.3
+npm v6.4.1
 ```
 
 ### To run dev server:

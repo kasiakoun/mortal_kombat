@@ -1,26 +1,53 @@
+/**
+ * Notifies observers about the changes his state
+ */
 export default class Observable {
   constructor() {
-    this.observers = [];
+    /**
+     * @private
+     */
+    this.internal = {
+      /**
+       * @type {any[]}
+       */
+      observers: [],
+    };
   }
 
+  /**
+   * Adds a function to the observers
+   * @param {Function} func
+   */
   subscribe(func) {
-    if (typeof func !== 'function') return;
+    if (typeof func !== 'function') {
+      return;
+    }
 
-    this.observers.push(func);
+    this.internal.observers.push(func);
   }
 
+  /**
+   * Removes a function from the observers
+   * @param {Function} func
+   */
   unsubscribe(func) {
-    if (typeof func !== 'function') return;
+    if (typeof func !== 'function') {
+      return;
+    }
 
     const foundIndex = this.observers.indexOf(func);
-    if (foundIndex < 0) return;
+    if (foundIndex < 0) {
+      return;
+    }
 
-    this.observers.splice(foundIndex, 1);
+    this.internal.observers.splice(foundIndex, 1);
   }
 
-  fire(paramter) {
-    (async () => {
-      this.observers.forEach(func => func(paramter));
-    })();
+  /**
+   * Calls all the functions that is contained in the observers
+   * @param {...*} parameters
+   */
+  fire(...parameters) {
+    this.internal.observers.forEach(func => func(...parameters));
   }
 }

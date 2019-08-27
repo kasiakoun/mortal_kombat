@@ -7,7 +7,7 @@ const port = 8080;
 const app = new express();
 
 app.use('/src', express.static(path.join(__dirname, '/src'), {
-  extensions: ['js']
+  extensions: ['js', 'json', 'png'],
 }));
 
 app.get('/', function(request, response) {

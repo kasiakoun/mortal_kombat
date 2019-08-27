@@ -1,0 +1,65 @@
+{
+  "image": "src/assets/graphics/units/cyrax.png",
+  "animations": [
+    {
+      "name": "stance",
+      "repeatAnimation": true,
+      "frames": [
+        {
+          "x": 9,
+          "y": 2098,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 88,
+          "y": 2098,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 165,
+          "y": 2098,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 239,
+          "y": 2098,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 316,
+          "y": 2093,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 395,
+          "y": 2092,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 478,
+          "y": 2093,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 563,
+          "y": 2094,
+          "width": 79,
+          "height": 137
+        },
+        {
+          "x": 647,
+          "y": 2095,
+          "width": 79,
+          "height": 137
+        }
+      ]
+    }
+  ]
+}

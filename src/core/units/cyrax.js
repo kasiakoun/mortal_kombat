@@ -1,7 +1,13 @@
 import UnitBase from './unit_base';
 
+/**
+ * @typedef {import('../animation/sprite_sheet').default} SpriteSheet
+ */
 export default class Cyrax extends UnitBase {
-  constructor() {
-    super(100, 100);
+  /**
+   * @param {SpriteSheet} spriteSheet
+   */
+  constructor(spriteSheet) {
+    super(spriteSheet, 100, 100);
   }
 }

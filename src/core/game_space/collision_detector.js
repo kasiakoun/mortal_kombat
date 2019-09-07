@@ -1,7 +1,7 @@
 import Observable from '../observable';
 
 /**
- * @typedef {import('./units/unit_base').default} UnitBase
+ * @typedef {import('../units/unit_base').default} UnitBase
  */
 
 /**

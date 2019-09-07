@@ -1,10 +1,10 @@
 /**
  * Enum for units
  * @readonly
- * @enum {number}
+ * @enum {string}
  */
 const Units = Object.freeze({
-  cyrax: 1,
+  cyrax: 'cyrax',
 });
 
 export default Units;

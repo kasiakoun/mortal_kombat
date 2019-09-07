@@ -1,5 +1,6 @@
 import Units from './units/units';
 import Cyrax from './units/cyrax';
+import createSpriteSheet from './animation/sprite_sheet_factory';
 
 /**
  * @typedef {import('./game_space/collision_detector').default} CollisionDetector
@@ -11,10 +12,18 @@ import Cyrax from './units/cyrax';
  */
 export default class UnitFactory {
   /**
-   * @param collisionDetector {CollisionDetector}
+   * @param {CollisionDetector} collDetector
    */
-  constructor(collisionDetector) {
-    this.collisionDetector = collisionDetector;
+  constructor(collDetector) {
+    /**
+     * @private
+     */
+    this.internal = {
+      /**
+       * @type {CollisionDetector}
+       */
+      collisionDetector: collDetector,
+    };
   }
 
   /**
@@ -24,9 +33,10 @@ export default class UnitFactory {
    */
   createUnit(units) {
     let unit;
+    const spriteSheet = createSpriteSheet(units);
     switch (units) {
       case Units.cyrax:
-        unit = new Cyrax();
+        unit = new Cyrax(spriteSheet);
         break;
       default:
         unit = undefined;
@@ -34,7 +44,7 @@ export default class UnitFactory {
     }
 
     if (unit) {
-      this.collisionDetector.addUnit(unit);
+      this.internal.collisionDetector.addUnit(unit);
     }
 
     return unit;

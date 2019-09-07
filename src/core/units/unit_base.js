@@ -3,6 +3,8 @@ import Point from '../point';
 
 /**
  * A base class for units
+ * @typedef {import('../animation/sprite_sheet').default} SpriteSheet
+ * @abstract
  */
 export default class UnitBase {
   /**
@@ -30,11 +32,25 @@ export default class UnitBase {
     return this.internal.positionChanged;
   }
 
-  constructor(width, height) {
+  /**
+   * Gets sprite sheet of this unit
+   */
+  get spriteSheet() {
+    return this.internal.spriteSheet;
+  }
+
+  /**
+   * @param {SpriteSheet} unitSpriteSheet
+   */
+  constructor(unitSpriteSheet, width, height) {
     /**
      * @private
      */
     this.internal = {
+      /**
+       * @type {SpriteSheet}
+       */
+      spriteSheet: unitSpriteSheet,
       /**
        * @type {Point}
        */

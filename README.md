@@ -10,5 +10,5 @@ npm v6.4.1
 
 ### To run dev server:
 ```angular2
-npm compile
+npm start
 ```

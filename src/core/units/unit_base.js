@@ -1,5 +1,6 @@
 import Observable from '../observable';
 import Point from '../point';
+import MoveController from '../game_space/move_controller';
 
 /**
  * A base class for units
@@ -59,6 +60,10 @@ export default class UnitBase {
        * @type {Observable}
        */
       positionChanged: new Observable(),
+      /**
+       * @type {MoveController}
+       */
+      moveController: new MoveController(this),
     };
     this.width = width;
     this.height = height;

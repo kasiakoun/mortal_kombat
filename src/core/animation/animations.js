@@ -5,6 +5,7 @@
  */
 const Animations = Object.freeze({
   stance: 'stance',
+  walkForward: 'walk_forward',
 });
 
 export default Animations;

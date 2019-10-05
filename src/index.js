@@ -5,6 +5,7 @@ import Units from './core/units/units';
 import Point from './core/point';
 import spriteJsonConvert from './core/animation/sprite_json_convert';
 import Animations from './core/animation/animations';
+import WalkForwardCommand from './core/commands/walk_forward_command';
 
 debugger;
 const collisionDetector = new CollisionDetector();
@@ -16,13 +17,36 @@ unitElement.style.background = `url(${cyrax.spriteSheet.image}) no-repeat`;
 unitElement.style.position = 'absolute';
 document.body.append(unitElement);
 
+cyrax.positionChanged.subscribe((e) => {
+  unitElement.style.marginLeft = `${e.position.x}px`;
+  unitElement.style.marginTop = `${e.position.y}px`;
+});
+
 cyrax.spriteSheet.animationFrameChanged.subscribe((animation, frame) => {
   unitElement.style.width = `${frame.width}px`;
   unitElement.style.height = `${frame.height}px`;
   unitElement.style.backgroundPosition = `-${frame.offset.x}px -${frame.offset.y}px`;
 });
-cyrax.spriteSheet.playAnimation(Animations.stance);
 
+const walkForwardCommand = new WalkForwardCommand(cyrax.spriteSheet, cyrax.internal.moveController);
+walkForwardCommand.execute();
+// ====================================================================================
+// const collisionDetector = new CollisionDetector();
+// const unitFactory = new UnitFactory(collisionDetector);
+// const cyrax = unitFactory.createUnit(Units.cyrax);
+
+// const unitElement = document.createElement('div');
+// unitElement.style.background = `url(${cyrax.spriteSheet.image}) no-repeat`;
+// unitElement.style.position = 'absolute';
+// document.body.append(unitElement);
+
+// cyrax.spriteSheet.animationFrameChanged.subscribe((animation, frame) => {
+//   unitElement.style.width = `${frame.width}px`;
+//   unitElement.style.height = `${frame.height}px`;
+//   unitElement.style.backgroundPosition = `-${frame.offset.x}px -${frame.offset.y}px`;
+// });
+// cyrax.spriteSheet.playAnimation(Animations.stance);
+// ====================================================================================
 // const collisionDetector = new CollisionDetector();
 // const unitFactory = new UnitFactory(collisionDetector);
 

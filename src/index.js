@@ -6,6 +6,7 @@ import Point from './core/point';
 import spriteJsonConvert from './core/animation/sprite_json_convert';
 import Animations from './core/animation/animations';
 import WalkForwardCommand from './core/commands/walk_forward_command';
+import WalkBackwardCommand from './core/commands/walk_backward_command';
 
 debugger;
 const collisionDetector = new CollisionDetector();
@@ -28,8 +29,8 @@ cyrax.spriteSheet.animationFrameChanged.subscribe((animation, frame) => {
   unitElement.style.backgroundPosition = `-${frame.offset.x}px -${frame.offset.y}px`;
 });
 
-const walkForwardCommand = new WalkForwardCommand(cyrax.spriteSheet, cyrax.internal.moveController);
-walkForwardCommand.execute();
+const walkBackwardCommand = new WalkBackwardCommand(cyrax.spriteSheet, cyrax.internal.moveController);
+walkBackwardCommand.execute();
 // ====================================================================================
 // const collisionDetector = new CollisionDetector();
 // const unitFactory = new UnitFactory(collisionDetector);

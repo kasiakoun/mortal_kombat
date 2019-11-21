@@ -1,4 +1,5 @@
-import spriteJsonConvert from './sprite_json_convert';
+import loadJsonObject from '../file_helpers/load_json_object';
+import convertJsonToSpriteSheet from '../converters/convert_json_to_sprite_sheet';
 
 /**
  * Creates a sprite sheet by unit name
@@ -7,7 +8,10 @@ import spriteJsonConvert from './sprite_json_convert';
  * @param {Units} units
  * @returns {SpriteSheet}
  */
-export default function createSpriteSheet(units) {
+function createSpriteSheet(units) {
   const pathToJson = `./src/assets/data/sprites/${units}.json`;
-  return spriteJsonConvert(pathToJson);
+  const json = loadJsonObject(pathToJson);
+  return convertJsonToSpriteSheet(json);
 }
+
+export default createSpriteSheet;

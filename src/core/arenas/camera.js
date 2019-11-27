@@ -10,9 +10,13 @@ import Observable from '../observable';
 class Camera {
   /**
    * @param {Arena} arena
+   * @param {number} width
+   * @param {number} height
    */
-  constructor(arena) {
+  constructor(arena, width, height) {
     this.arena = arena;
+    this.width = width;
+    this.height = height;
     this.position = new Point(0, 0);
     this.positionChanged = new Observable();
   }

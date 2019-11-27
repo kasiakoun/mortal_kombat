@@ -12,11 +12,11 @@ import Camera from './core/arenas/camera';
 
 debugger;
 const arena = createArena(Arenas.waterfront);
-const camera = new Camera(arena);
+const camera = new Camera(arena, 400, 254);
 
 const arenaElement = document.createElement('div');
-arenaElement.style.width = `${arena.width}px`;
-arenaElement.style.height = `${arena.height}px`;
+arenaElement.style.width = `${camera.width}px`;
+arenaElement.style.height = `${camera.height}px`;
 arenaElement.style.background = '#303 no-repeat';
 arenaElement.style.position = 'relative';
 arenaElement.style.overflow = 'hidden';

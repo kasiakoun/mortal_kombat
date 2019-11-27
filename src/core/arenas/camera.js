@@ -10,34 +10,53 @@ import Observable from '../observable';
 class Camera {
   /**
    * @param {Arena} arena
+   * @param {number} width
+   * @param {number} height
    */
-  constructor(arena) {
+  constructor(arena, width, height) {
     this.arena = arena;
+    this.width = width;
+    this.height = height;
     this.position = new Point(0, 0);
     this.positionChanged = new Observable();
   }
 
   /**
-   * @static
-   * @param {Point} position
    * @param {ArenaLayer} layer
    * @param {ArenaLayerElement} layerElement
    * @returns {Point}
    */
-  static getElementLayerPosition(position, layer, layerElement) {
-    const x = layerElement.position.x + (layer.speed * position.x);
-    const y = layerElement.position.y + position.y;
+  getElementLayerPosition(layer, layerElement) {
+    const x = layerElement.position.x + (layer.speed * this.position.x);
+    const y = layerElement.position.y + this.position.y;
+
     return new Point(x, y);
+  }
+
+  /**
+   * @param {Point} position
+   * @returns {Point}
+   */
+  getClonedPosition(position) {
+    const clonedPosition = Object.assign({}, position);
+    const maxCameraPositionX = -(this.arena.width - this.width);
+
+    if (maxCameraPositionX > position.x) {
+      clonedPosition.x = maxCameraPositionX;
+    }
+
+    return clonedPosition;
   }
 
   /**
    * @param {Point} position
    */
   setPosition(position) {
-    this.position = position;
+    this.position = this.getClonedPosition(position);
+
     this.arena.layers.forEach((layer) => {
       layer.elements.forEach((layerElement) => {
-        const elementLayerPosition = Camera.getElementLayerPosition(position, layer, layerElement);
+        const elementLayerPosition = this.getElementLayerPosition(layer, layerElement);
         this.positionChanged.fire(layerElement, elementLayerPosition);
       });
     });

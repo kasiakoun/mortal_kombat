@@ -3,8 +3,7 @@ import Observable from '../observable';
 /**
  * @typedef {import('./frame').default} Frame
  */
-
-export default class Animation {
+class Animation {
   /**
    * Frame that is shown now
    * @type {Frame}
@@ -39,45 +38,33 @@ export default class Animation {
   }
 
   /**
-   * @param {string} animationName Animation name
-   * @param {Frame[]} frameArray Frame array
-   * @param {boolean} repeatAnimation Repeat animation after played
+   * @param {string} name Animation name
+   * @param {Frame[]} frames Frame array
+   * @param {boolean} repeat Repeat animation after played
    * @param {number} rate Miliseconds between frames
    */
-  constructor(animationName, frameArray, repeatAnimation, rate) {
+  constructor(name, frames, repeat, rate) {
     /**
      * @private
+     * @type {{
+     * frames: Frame[],
+     * currentFrame: Frame,
+     * repeat: boolean,
+     * frameRate: number,
+     * timer: NodeJS.Timeout,
+     * name: string,
+     * currentFrameChanged: Observable
+     * }}
      */
-    this.internal = {
-      /**
-       * @type {Frame[]}
-       */
-      frames: frameArray,
-      /**
-       * @type {Frame}
-       */
-      currentFrame: undefined,
-      /**
-       * @type {boolean}
-       */
-      repeat: repeatAnimation,
-      /**
-       * @type {number}
-       */
-      frameRate: rate,
-      /**
-       * @type {NodeJS.Timeout}
-       */
-      timer: undefined,
-      /**
-       * @param {string}
-       */
-      name: animationName,
-      /**
-       * @type {Observable}
-       */
-      currentFrameChanged: new Observable(),
-    };
+    this.internal = {};
+
+    this.internal.frames = frames;
+    this.internal.currentFrame = undefined;
+    this.internal.repeat = repeat;
+    this.internal.frameRate = rate;
+    this.internal.timer = undefined;
+    this.internal.name = name;
+    this.internal.currentFrameChanged = new Observable();
   }
 
   /**
@@ -88,8 +75,10 @@ export default class Animation {
 
     this.internal.timer = setInterval(() => {
       let nextFrameIndex;
+
       if (this.internal.currentFrame) {
         nextFrameIndex = this.internal.frames.indexOf(this.internal.currentFrame) + 1;
+
         if (nextFrameIndex >= this.internal.frames.length) {
           if (this.internal.repeat) {
             nextFrameIndex = 0;
@@ -115,3 +104,5 @@ export default class Animation {
     this.internal.timer = undefined;
   }
 }
+
+export default Animation;

@@ -1,29 +1,27 @@
-import Units from './units/units';
-import Cyrax from './units/cyrax';
+import Units from './entities/units/units';
+import Cyrax from './entities/units/cyrax';
 import createSpriteSheet from './animation/sprite_sheet_factory';
-
-/**
- * @typedef {import('./game_space/collision_detector').default} CollisionDetector
- * @typedef {import('./units/unit_base').default} UnitBase
- */
+import Transform from './transform';
+import Point from './point';
 
 /**
  * Creates units
+ * @typedef {import('./game_space/collision_detector').default} CollisionDetector
+ * @typedef {import('./entities/units/unit_base').default} UnitBase
  */
-export default class UnitFactory {
+class UnitFactory {
   /**
-   * @param {CollisionDetector} collDetector
+   * @param {CollisionDetector} collisionDetector
    */
-  constructor(collDetector) {
+  constructor(collisionDetector) {
     /**
      * @private
+     * @type {{
+     * collisionDetector: CollisionDetector}}
      */
-    this.internal = {
-      /**
-       * @type {CollisionDetector}
-       */
-      collisionDetector: collDetector,
-    };
+    this.internal = {};
+
+    this.internal.collisionDetector = collisionDetector;
   }
 
   /**
@@ -34,9 +32,13 @@ export default class UnitFactory {
   createUnit(units) {
     let unit;
     const spriteSheet = createSpriteSheet(units);
+    const position = new Point(0, 0);
+    // todo: temprorarily solution. It will have to be get from JSON
+    const transform = new Transform(position, 90, 137);
+
     switch (units) {
       case Units.cyrax:
-        unit = new Cyrax(spriteSheet);
+        unit = new Cyrax(transform, spriteSheet);
         break;
       default:
         unit = undefined;
@@ -44,9 +46,11 @@ export default class UnitFactory {
     }
 
     if (unit) {
-      this.internal.collisionDetector.addUnit(unit);
+      this.internal.collisionDetector.addEntity(unit);
     }
 
     return unit;
   }
 }
+
+export default UnitFactory;

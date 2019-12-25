@@ -1,7 +1,7 @@
 /**
  * An ordered pair of x- and y-coordinates
  */
-export default class Point {
+class Point {
   /**
    * @param {number} x x - coordinate
    * @param {number} y y - coordinate
@@ -11,3 +11,5 @@ export default class Point {
     this.y = y;
   }
 }
+
+export default Point;

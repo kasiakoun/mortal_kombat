@@ -2,33 +2,27 @@ import Command from '../command';
 import Animations from '../animation/animations';
 
 /**
+  * Command that makes a unit walk backward
  * @typedef {import('../animation/sprite_sheet').default} SpriteSheet
  * @typedef {import('../game_space/move_controller').default} MoveController
- */
-
-/**
-  * Command that makes a unit walk backward
   */
-export default class WalkBackwardCommand extends Command {
+class WalkBackwardCommand extends Command {
   /**
-   * @param {SpriteSheet} unitSpriteSheet
-   * @param {MoveController} unitMoveController
+   * @param {SpriteSheet} spriteSheet
+   * @param {MoveController} moveController
    */
-  constructor(unitSpriteSheet, unitMoveController) {
+  constructor(spriteSheet, moveController) {
     super();
     /**
      * @private
+     * @type {{
+     * spriteSheet: SpriteSheet,
+     * moveController: MoveController}}
      */
-    this.internal = {
-      /**
-       * @type {SpriteSheet}
-       */
-      spriteSheet: unitSpriteSheet,
-      /**
-       * @type {MoveController}
-       */
-      moveController: unitMoveController,
-    };
+    this.internal = {};
+
+    this.internal.spriteSheet = spriteSheet;
+    this.internal.moveController = moveController;
   }
 
   /**
@@ -39,3 +33,5 @@ export default class WalkBackwardCommand extends Command {
     this.internal.moveController.moveBackward();
   }
 }
+
+export default WalkBackwardCommand;

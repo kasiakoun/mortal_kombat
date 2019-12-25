@@ -11,6 +11,7 @@ import convertJsonToSpriteSheet from '../converters/convert_json_to_arena';
 function createArena(arenas) {
   const pathToJson = `./src/assets/data/arenas/${arenas}.json`;
   const json = loadJsonObject(pathToJson);
+
   return convertJsonToSpriteSheet(json);
 }
 

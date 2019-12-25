@@ -1,5 +1,5 @@
 
-export default class Command {
+class Command {
   /**
    * Invokes the command
    */
@@ -7,3 +7,5 @@ export default class Command {
     throw new Error(`execute is not implemented in '${this.constructor.name}' class`);
   }
 }
+
+export default Command;

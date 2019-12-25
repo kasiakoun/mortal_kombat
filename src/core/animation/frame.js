@@ -1,8 +1,7 @@
 /**
  * @typedef {import('../point').default} Point
  */
-
-export default class Frame {
+class Frame {
   /**
    * Offset point relative to sprite
    * @type {Point}
@@ -33,6 +32,9 @@ export default class Frame {
    * @param {number} height Height of frame
    */
   constructor(offset, width, height) {
+    /**
+     * @private
+     */
     this.inernal = {
       offset,
       width,
@@ -40,3 +42,5 @@ export default class Frame {
     };
   }
 }
+
+export default Frame;

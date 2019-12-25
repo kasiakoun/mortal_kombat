@@ -1,15 +1,12 @@
 import Observable from '../observable';
 
 /**
- * @typedef {import('../units/unit_base').default} UnitBase
+ * Detects collisions between entities
+ * @typedef {import('../entities/entity').default} Entity
  */
-
-/**
- * Detects collisions between units
- */
-export default class CollisionDetector {
+class CollisionDetector {
   /**
-   * Fires when units collided between each other
+   * Fires when entities collided between each other
    * @type {Observable}
    */
   get collided() {
@@ -19,39 +16,38 @@ export default class CollisionDetector {
   constructor() {
     /**
      * @private
+     * @type {{
+     * entities: Entity[],
+     * collided: Observable
+     * }}
      */
-    this.internal = {
-      /**
-       * @type {UnitBase[]}
-       */
-      units: [],
-      /**
-       * @type {Observable}
-       */
-      collided: new Observable(),
-    };
+    this.internal = {};
+
+    this.internal.entities = [];
+    this.internal.collided = new Observable();
   }
 
   /**
-   * Adds a unit to array then subscribes to him
-   * @param {UnitBase} unit
+   * Adds an entity to array then subscribes to him
+   * @param {Entity} entity
    */
-  addUnit(unit) {
-    this.internal.units.push(unit);
-    unit.positionChanged.subscribe(changedUnit => this.onDetectCollision(changedUnit));
+  addEntity(entity) {
+    this.internal.entities.push(entity);
+    entity.transform.positionChanged
+      .subscribe(changedEntity => this.onDetectCollision(changedEntity));
   }
 
   /**
-   * Handles when any unit changes his state(position, etc.)
-   * @param {UnitBase} changedUnit
+   * Handles when any entity changes his state(position, etc.)
+   * @param {Entity} changedEntity
    */
-  onDetectCollision(changedUnit) {
-    if (this.internal.units.indexOf(changedUnit) < 0) return;
+  onDetectCollision(changedEntity) {
+    if (this.internal.entities.indexOf(changedEntity) < 0) return;
 
-    this.internal.units.forEach((unit) => {
-      const collisitionDetected = CollisionDetector.detectCollision(changedUnit, unit);
+    this.internal.entities.forEach((entity) => {
+      const collisitionDetected = CollisionDetector.detectCollision(changedEntity, entity);
       if (collisitionDetected) {
-        this.collided.fire(changedUnit, unit);
+        this.collided.fire(changedEntity, entity);
       }
     });
   }
@@ -59,29 +55,32 @@ export default class CollisionDetector {
   /**
    * Tries to detect collision between two objects
    * @static
-   * @param {UnitBase} unit1
-   * @param {UnitBase} unit2
+   * @param {Entity} entity1
+   * @param {Entity} entity2
    * @returns {boolean} It is true if collision was detected
    */
-  static detectCollision(unit1, unit2) {
-    if (unit1 === unit2) return false;
+  static detectCollision(entity1, entity2) {
+    if (entity1 === entity2) return false;
 
-    const unitCoordinates1 = CollisionDetector.getUnitCoordinates(unit1);
-    const unitCoordinates2 = CollisionDetector.getUnitCoordinates(unit2);
+    const entityCoordinates1 = CollisionDetector.getEntityCoordinates(entity1);
+    const entityCoordinates2 = CollisionDetector.getEntityCoordinates(entity2);
 
-    if (unitCoordinates1.bottom < unitCoordinates2.top) return false;
-    if (unitCoordinates1.top > unitCoordinates2.bottom) return false;
-    if (unitCoordinates1.right < unitCoordinates2.left) return false;
-    if (unitCoordinates1.left > unitCoordinates2.right) return false;
+    if (entityCoordinates1.bottom < entityCoordinates2.top) return false;
+    if (entityCoordinates1.top > entityCoordinates2.bottom) return false;
+    if (entityCoordinates1.right < entityCoordinates2.left) return false;
+    if (entityCoordinates1.left > entityCoordinates2.right) return false;
 
     return true;
   }
 
-  static getUnitCoordinates(unit) {
-    const left = unit.position.x;
-    const right = left + unit.width;
-    const top = unit.position.y;
-    const bottom = top + unit.height;
+  /**
+   * @param {Entity} entity
+   */
+  static getEntityCoordinates(entity) {
+    const left = entity.transform.position.x;
+    const right = left + entity.transform.width;
+    const top = entity.transform.position.y;
+    const bottom = top + entity.transform.height;
     return {
       left,
       top,
@@ -90,3 +89,5 @@ export default class CollisionDetector {
     };
   }
 }
+
+export default CollisionDetector;

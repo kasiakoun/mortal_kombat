@@ -1,17 +1,16 @@
 /**
  * Notifies observers about the changes his state
  */
-export default class Observable {
+class Observable {
   constructor() {
     /**
      * @private
+     * @type {{
+     * observers: any[]}}
      */
-    this.internal = {
-      /**
-       * @type {any[]}
-       */
-      observers: [],
-    };
+    this.internal = {};
+
+    this.internal.observers = [];
   }
 
   /**
@@ -51,3 +50,5 @@ export default class Observable {
     this.internal.observers.forEach(func => func(...parameters));
   }
 }
+
+export default Observable;

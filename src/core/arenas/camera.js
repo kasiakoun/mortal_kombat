@@ -69,6 +69,17 @@ class Camera {
 
     return clonedPosition;
   }
+
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
+  shiftPosition(x, y) {
+    this.internal.position.x += x;
+    this.internal.position.y += y;
+
+    this.position = this.internal.position;
+  }
 }
 
 export default Camera;

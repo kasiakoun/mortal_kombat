@@ -5,6 +5,7 @@ import Entity from '../entity';
  * A base class for units
  * @typedef {import('../../transform').default} Transform
  * @typedef {import('../../animation/sprite_sheet').default} SpriteSheet
+ * @typedef {import('../../game_space/move_enabler').default} MoveEnabler
  */
 class UnitBase extends Entity {
   get transform() {
@@ -25,8 +26,9 @@ class UnitBase extends Entity {
   /**
    * @param {Transform} transform
    * @param {SpriteSheet} spriteSheet
+   * @param {MoveEnabler} moveEnabler
    */
-  constructor(transform, spriteSheet) {
+  constructor(transform, spriteSheet, moveEnabler) {
     super(transform);
     /**
      * @private
@@ -38,7 +40,7 @@ class UnitBase extends Entity {
     this.internal = Object.assign({}, this.internal);
 
     this.internal.spriteSheet = spriteSheet;
-    this.internal.moveController = new MoveController(this);
+    this.internal.moveController = new MoveController(this, moveEnabler);
   }
 }
 

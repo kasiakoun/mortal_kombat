@@ -1,20 +1,24 @@
 /**
  * @typedef {import('../arenas/camera_controller').default} CameraController
+ * @typedef {import('../arenas/arena_controller').default} ArenaController
  * @typedef {import('../entities/units/unit_base').default} UnitBase
  * @typedef {import('../point').default} Point
  */
 class MoveEnabler {
   /**
    * @param {CameraController} cameraController
+   * @param {ArenaController} arenaController
    */
-  constructor(cameraController) {
+  constructor(cameraController, arenaController) {
     /**
      * @type {{
-     * cameraController: CameraController}}
+     * cameraController: CameraController,
+     * arenaController: ArenaController}}
      */
     this.internal = {};
 
     this.internal.cameraController = cameraController;
+    this.internal.arenaController = arenaController;
   }
 
   /**
@@ -23,7 +27,8 @@ class MoveEnabler {
    * @returns {boolean}
    */
   canMove(unit, position) {
-    return this.internal.cameraController.isAllowChangePosition(unit, position);
+    return this.internal.cameraController.isAllowChangePosition(unit, position)
+      && this.internal.arenaController.isAllowChangePosition(unit, position);
   }
 }
 

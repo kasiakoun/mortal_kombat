@@ -8,6 +8,7 @@ import loadTextFile from './load_text_file';
 function loadJsonObject(jsonPath) {
   const mimeType = 'application/json';
   const jsonText = loadTextFile(jsonPath, mimeType);
+
   return JSON.parse(jsonText);
 }
 

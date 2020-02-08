@@ -2,14 +2,11 @@ import Command from '../command';
 import Animations from '../animation/animations';
 
 /**
+  * Command that makes a unit walk forward
  * @typedef {import('../animation/sprite_sheet').default} SpriteSheet
  * @typedef {import('../game_space/move_controller').default} MoveController
- */
-
-/**
-  * Command that makes a unit walk forward
   */
-export default class WalkForwardCommand extends Command {
+class WalkForwardCommand extends Command {
   /**
    * @param {SpriteSheet} unitSpriteSheet
    * @param {MoveController} unitMoveController
@@ -18,17 +15,14 @@ export default class WalkForwardCommand extends Command {
     super();
     /**
      * @private
+     * @type {{
+     * spriteSheet: SpriteSheet,
+     * moveController: MoveController}}
      */
-    this.internal = {
-      /**
-       * @type {SpriteSheet}
-       */
-      spriteSheet: unitSpriteSheet,
-      /**
-       * @type {MoveController}
-       */
-      moveController: unitMoveController,
-    };
+    this.internal = {};
+
+    this.internal.spriteSheet = unitSpriteSheet;
+    this.internal.moveController = unitMoveController;
   }
 
   /**
@@ -39,3 +33,5 @@ export default class WalkForwardCommand extends Command {
     this.internal.moveController.moveForward();
   }
 }
+
+export default WalkForwardCommand;

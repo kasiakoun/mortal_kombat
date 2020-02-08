@@ -1,5 +1,6 @@
 import Point from '../point';
 import Observable from '../observable';
+import Parallax from './parallax';
 
 /**
  * @typedef {import('./arena').default} Arena
@@ -8,29 +9,51 @@ import Observable from '../observable';
  */
 
 class Camera {
+  get width() {
+    return this.internal.width;
+  }
+
+  get height() {
+    return this.internal.height;
+  }
+
+  get position() {
+    return this.internal.position;
+  }
+
+  set position(val) {
+    this.internal.position = this.getClonedPosition(val);
+    const parallaxElements = this.internal.parallax.move(this.position);
+    this.positionChanged.fire(this.position, parallaxElements);
+  }
+
+  get positionChanged() {
+    return this.internal.positionChanged;
+  }
+
   /**
    * @param {Arena} arena
    * @param {number} width
    * @param {number} height
    */
   constructor(arena, width, height) {
-    this.arena = arena;
-    this.width = width;
-    this.height = height;
-    this.position = new Point(0, 0);
-    this.positionChanged = new Observable();
-  }
+    /**
+     * @type {{
+     * parallax: Parallax,
+     * arena: arena,
+     * width: number,
+     * height: number,
+     * position: Point,
+     * positionChanged: Observable}}
+     */
+    this.internal = {};
 
-  /**
-   * @param {ArenaLayer} layer
-   * @param {ArenaLayerElement} layerElement
-   * @returns {Point}
-   */
-  getElementLayerPosition(layer, layerElement) {
-    const x = layerElement.position.x + (layer.speed * this.position.x);
-    const y = layerElement.position.y + this.position.y;
-
-    return new Point(x, y);
+    this.internal.parallax = new Parallax(arena);
+    this.internal.arena = arena;
+    this.internal.width = width;
+    this.internal.height = height;
+    this.internal.position = new Point(0, 0);
+    this.internal.positionChanged = new Observable();
   }
 
   /**
@@ -39,27 +62,23 @@ class Camera {
    */
   getClonedPosition(position) {
     const clonedPosition = Object.assign({}, position);
-    const maxCameraPositionX = -(this.arena.width - this.width);
+    const maxCameraPositionX = this.internal.arena.width - this.width;
 
-    if (maxCameraPositionX > position.x) {
-      clonedPosition.x = maxCameraPositionX;
-    }
+    if (position.x > maxCameraPositionX) clonedPosition.x = maxCameraPositionX;
+    if (position.x < 0) clonedPosition.x = 0;
 
     return clonedPosition;
   }
 
   /**
-   * @param {Point} position
+   * @param {number} x
+   * @param {number} y
    */
-  setPosition(position) {
-    this.position = this.getClonedPosition(position);
+  shiftPosition(x, y) {
+    this.internal.position.x += x;
+    this.internal.position.y += y;
 
-    this.arena.layers.forEach((layer) => {
-      layer.elements.forEach((layerElement) => {
-        const elementLayerPosition = this.getElementLayerPosition(layer, layerElement);
-        this.positionChanged.fire(layerElement, elementLayerPosition);
-      });
-    });
+    this.position = this.internal.position;
   }
 }
 

@@ -1,65 +1,63 @@
 import Point from '../point';
 
 /**
- * @typedef {import('../units/unit_base').default} UnitBase
+ * @typedef {import('../entities/units/unit_base').default} UnitBase
+ * @typedef {import('./move_enabler').default} MoveEnabler
  */
-
-export default class MoveController {
+class MoveController {
   /**
-   * @param {UnitBase} unitBase
+   * @param {UnitBase} unit
+   * @param {MoveEnabler} moveEnabler
    */
-  constructor(unitBase) {
+  constructor(unit, moveEnabler) {
     /**
      * @private
+     * @type {{
+     * unit: UnitBase,
+     * moveEnabler: MoveEnabler,
+     * timer: NodeJS.Timeout,
+     * frequency: number,
+     * forwardStep: number,
+     * backwardStep: number
+     * }}
      */
-    this.internal = {
-      /**
-       * @type {UnitBase}
-       */
-      unit: unitBase,
-      /**
-       * @type {NodeJS.Timeout}
-       */
-      timer: undefined,
-      /**
-       * @type {number}
-       */
-      frequency: 30,
-      /**
-       * @type {number}
-       */
-      forwardStep: 3,
-      /**
-       * @type {number}
-       */
-      backwardStep: 2,
-    };
+    this.internal = {};
+
+    this.internal.unit = unit;
+    this.internal.moveEnabler = moveEnabler;
+    this.internal.timer = undefined;
+    this.internal.frequency = 30;
+    // todo: будет сделан механизм для поворта unit'а
+    this.internal.forwardStep = 3;
+    // todo: будет сделан механизм для поворта unit'а
+    this.internal.backwardStep = -2;
+  }
+
+  /**
+   * @param {number} xOffeset
+   */
+  move(xOffeset) {
+    if (this.internal.timer) this.stop();
+
+    this.internal.timer = setInterval(() => {
+      const unitPosition = this.internal.unit.transform.position;
+
+      const currentX = unitPosition.x + xOffeset;
+      const currentY = unitPosition.y;
+
+      const currentPosition = new Point(currentX, currentY);
+      if (this.internal.moveEnabler.canMove(this.internal.unit, currentPosition)) {
+        this.internal.unit.transform.position = new Point(currentX, currentY);
+      }
+    }, this.internal.frequency);
   }
 
   moveForward() {
-    if (this.internal.timer) this.stop();
-
-    this.internal.timer = setInterval(() => {
-      const unitPosition = this.internal.unit.position;
-
-      const currentX = unitPosition.x + this.internal.forwardStep;
-      const currentY = unitPosition.y;
-
-      this.internal.unit.position = new Point(currentX, currentY);
-    }, this.internal.frequency);
+    this.move(this.internal.forwardStep);
   }
 
   moveBackward() {
-    if (this.internal.timer) this.stop();
-
-    this.internal.timer = setInterval(() => {
-      const unitPosition = this.internal.unit.position;
-
-      const currentX = unitPosition.x - this.internal.backwardStep;
-      const currentY = unitPosition.y;
-
-      this.internal.unit.position = new Point(currentX, currentY);
-    }, this.internal.frequency);
+    this.move(this.internal.backwardStep);
   }
 
   stop() {
@@ -69,3 +67,5 @@ export default class MoveController {
     this.internal.timer = undefined;
   }
 }
+
+export default MoveController;

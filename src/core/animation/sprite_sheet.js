@@ -4,8 +4,7 @@ import Observable from '../observable';
  * @typedef {import('./animation').default} Animation
  * @typedef {import('./animations').default} Animations
  */
-
-export default class SpriteSheet {
+class SpriteSheet {
   /**
    * @returns {Observable}
    */
@@ -28,25 +27,18 @@ export default class SpriteSheet {
   constructor(animationArray, imagePath) {
     /**
      * @private
+     * @type {{
+     * animations: Animation[],
+     * image: string,
+     * animationFrameChanged: Observable,
+     * currentAnimation: Animation}}
      */
-    this.internal = {
-      /**
-       * @type {Animation[]}
-       */
-      animations: animationArray,
-      /**
-       * @type {string}
-       */
-      image: imagePath,
-      /**
-       * @type {Observable}
-       */
-      animationFrameChanged: new Observable(),
-      /**
-       * @type {Animation}
-       */
-      currentAnimation: undefined,
-    };
+    this.internal = {};
+
+    this.internal.animations = animationArray;
+    this.internal.image = imagePath;
+    this.internal.animationFrameChanged = new Observable();
+    this.internal.currentAnimation = undefined;
 
     this.internal.animations.forEach((p) => {
       p.currentFrameChanged.subscribe((animation, frame) => {
@@ -73,3 +65,5 @@ export default class SpriteSheet {
     animation.play();
   }
 }
+
+export default SpriteSheet;

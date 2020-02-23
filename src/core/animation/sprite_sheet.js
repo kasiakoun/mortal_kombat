@@ -53,7 +53,7 @@ class SpriteSheet {
    */
   playAnimation(animationName) {
     if (this.internal.currentAnimation) {
-      if (this.internal.currentAnimation.name !== animationName) return;
+      if (this.internal.currentAnimation.name === animationName) return;
 
       this.internal.currentAnimation.stop();
     }

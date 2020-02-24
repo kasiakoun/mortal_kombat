@@ -12,7 +12,9 @@ import MoveEnabler from '../core/game_space/move_enabler';
 import UnitFactory from '../core/unit_factory';
 import Units from '../core/entities/units/units';
 import Point from '../core/point';
-import WalkForwardCommand from '../core/commands/walk_forward_command';
+import PlayerInput from '../core/player/player_input';
+import InputEventType from '../core/player/input_event_type';
+import InputType from '../core/player/input_type';
 
 let gameElement;
 let cameraElement;
@@ -46,12 +48,7 @@ function start() {
   leftUnit.spriteSheet.playAnimation(Animations.stance);
   cameraController.addUnit(leftUnit);
 
-  const rightUnitInitPosition = new Point(150, 100);
-  const rightUnit = unitFactory.createUnit(Units.cyrax, rightUnitInitPosition);
-  const moveCommand = new WalkForwardCommand(rightUnit.spriteSheet,
-    rightUnit.internal.moveController);
-  moveCommand.execute();
-  cameraController.addUnit(rightUnit);
+  const leftPlayerInput = new PlayerInput(leftUnit);
 
   gameElement = document.createElement('div');
 
@@ -63,10 +60,29 @@ function start() {
   const leftUnitElement = createUnitElement(leftUnit);
   arenaElement.append(leftUnitElement);
 
-  const rightUnitElement = createUnitElement(rightUnit);
-  arenaElement.append(rightUnitElement);
-
   startUpdatingElements();
+
+  const keysDictionary = {
+    ArrowLeft: InputType.backward,
+    ArrowUp: InputType.upward,
+    ArrowRight: InputType.forward,
+    ArrowDown: InputType.downward,
+  };
+
+  window.addEventListener('keydown', (e) => {
+    e.preventDefault();
+    const inputEventType = e.repeat ? InputEventType.down : InputEventType.press;
+    const inputType = keysDictionary[e.code];
+
+    leftPlayerInput.handleInput(inputEventType, inputType);
+  });
+
+  window.addEventListener('keyup', (e) => {
+    e.preventDefault();
+    const inputType = keysDictionary[e.code];
+
+    leftPlayerInput.handleInput(InputEventType.up, inputType);
+  });
 
   return gameElement;
 }

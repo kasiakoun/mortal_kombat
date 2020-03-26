@@ -26,12 +26,17 @@ class Frame {
     return this.inernal.height;
   }
 
+  get frameRate() {
+    return this.inernal.frameRate;
+  }
+
   /**
    * @param {Point} offset Offset point relative to sprite
    * @param {number} width Width of frame
    * @param {number} height Height of frame
+   * @param {number} frameRate
    */
-  constructor(offset, width, height) {
+  constructor(offset, width, height, frameRate) {
     /**
      * @private
      */
@@ -39,6 +44,7 @@ class Frame {
       offset,
       width,
       height,
+      frameRate,
     };
   }
 }

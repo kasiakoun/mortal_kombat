@@ -14,7 +14,7 @@ function convertJsonToSpriteSheet(jsonObject) {
     const frames = animation.frames.map((frame) => {
       const offset = new Point(frame.x, frame.y);
 
-      return new Frame(offset, frame.width, frame.height);
+      return new Frame(offset, frame.width, frame.height, frame.frameRate);
     });
 
     // TODO: need to change frameRate from const in future

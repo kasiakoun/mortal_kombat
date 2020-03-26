@@ -49,6 +49,10 @@ class Observable {
   fire(...parameters) {
     this.internal.observers.forEach(func => func(...parameters));
   }
+
+  clear() {
+    this.internal.observers = [];
+  }
 }
 
 export default Observable;

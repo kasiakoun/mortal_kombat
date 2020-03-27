@@ -52,11 +52,7 @@ class SpriteSheet {
    * @param {Animations} animationName
    */
   playAnimation(animationName) {
-    if (this.internal.currentAnimation) {
-      if (this.internal.currentAnimation.name === animationName) return;
-
-      this.internal.currentAnimation.stop();
-    }
+    if (this.internal.currentAnimation) this.internal.currentAnimation.stop();
 
     const animation = this.internal.animations.find(p => p.name === animationName);
     if (!animation) throw new Error(`Animation '${animationName}' did not found`);

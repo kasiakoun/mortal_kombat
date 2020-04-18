@@ -4,6 +4,8 @@ import StanceState from './stance_state';
 import InputEventType from '../../../player/input_event_type';
 import InputType from '../../../player/input_type';
 import WalkForwardState from './walk_forward_state';
+import UpwardMotion from '../../../game_space/motions/upward_motion';
+import JumpUpwardState from './jump_upward_state';
 
 /**
  * @typedef {import('../unit_base').default} UnitBase
@@ -22,6 +24,7 @@ class WalkBackwardState extends StateBase {
    * @returns {StateBase}
    */
   handleInput(inputEventType, inputType, inputState) {
+    super.handleInput(inputEventType, inputType, inputState);
     let newState;
 
     switch (inputType) {
@@ -29,6 +32,8 @@ class WalkBackwardState extends StateBase {
         if (inputEventType === InputEventType.up) {
           if (inputState.forward) {
             newState = new WalkForwardState(this.unit);
+          } else if (inputState.upward) {
+            newState = new JumpUpwardState(this.unit);
           } else {
             newState = new StanceState(this.unit);
           }

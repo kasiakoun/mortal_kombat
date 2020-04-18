@@ -73,25 +73,69 @@ class Animation {
   play() {
     if (this.internal.timer) return;
 
-    this.internal.timer = setInterval(() => {
-      let nextFrameIndex;
+    this.currentFrame = undefined;
+    this.runAnimationByTimer();
+  }
 
-      if (this.internal.currentFrame) {
-        nextFrameIndex = this.internal.frames.indexOf(this.internal.currentFrame) + 1;
+  runAnimationByTimer() {
+    const frameRate = this.getNextFrameRate();
 
-        if (nextFrameIndex >= this.internal.frames.length) {
-          if (this.internal.repeat) {
-            nextFrameIndex = 0;
-          } else {
-            this.stop();
-          }
-        }
-      } else {
-        nextFrameIndex = 0;
+    this.internal.timer = setTimeout(() => {
+      const isNextState = this.goToNextFrame();
+      clearTimeout(this.internal.timer);
+
+      if (isNextState) {
+        this.runAnimationByTimer();
       }
+    }, frameRate);
+  }
 
-      this.currentFrame = this.internal.frames[nextFrameIndex];
-    }, this.internal.frameRate);
+  /**
+   * @returns {boolean}
+   */
+  goToNextFrame() {
+    let nextFrameIndex;
+
+    if (this.internal.currentFrame) {
+      nextFrameIndex = this.internal.frames.indexOf(this.internal.currentFrame) + 1;
+
+      if (nextFrameIndex >= this.internal.frames.length) {
+        if (this.internal.repeat) {
+          nextFrameIndex = 0;
+        } else {
+          this.stop();
+          this.currentFrame = undefined;
+
+          return false;
+        }
+      }
+    } else {
+      nextFrameIndex = 0;
+    }
+
+    this.currentFrame = this.internal.frames[nextFrameIndex];
+
+    return true;
+  }
+
+  getNextFrameRate() {
+    const nextFrame = this.getNextFrame();
+
+    return nextFrame.frameRate !== undefined ? nextFrame.frameRate : this.internal.frameRate;
+  }
+
+  getNextFrame() {
+    let nextFrameIndex = 0;
+
+    if (this.internal.currentFrame) {
+      nextFrameIndex = this.internal.frames.indexOf(this.internal.currentFrame) + 1;
+    }
+
+    if (nextFrameIndex >= this.internal.frames.length) {
+      nextFrameIndex = 0;
+    }
+
+    return this.internal.frames[nextFrameIndex];
   }
 
   /**

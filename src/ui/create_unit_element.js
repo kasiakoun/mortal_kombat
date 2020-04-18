@@ -19,6 +19,8 @@ function createUnitElement(unit) {
   });
 
   unit.spriteSheet.animationFrameChanged.subscribe((animation, frame) => {
+    if (!frame) return;
+
     unitElement.style.width = `${frame.width}px`;
     unitElement.style.height = `${frame.height}px`;
     unitElement.style.backgroundPosition = `-${frame.offset.x}px -${frame.offset.y}px`;

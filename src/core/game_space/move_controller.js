@@ -35,29 +35,39 @@ class MoveController {
 
   /**
    * @param {number} xOffeset
+   * @param {number} yOffset
    */
-  move(xOffeset) {
+  move(xOffeset, yOffset) {
     if (this.internal.timer) this.stop();
 
     this.internal.timer = setInterval(() => {
       const unitPosition = this.internal.unit.transform.position;
 
       const currentX = unitPosition.x + xOffeset;
-      const currentY = unitPosition.y;
+      const currentY = unitPosition.y + yOffset;
 
-      const currentPosition = new Point(currentX, currentY);
-      if (this.internal.moveEnabler.canMove(this.internal.unit, currentPosition)) {
-        this.internal.unit.transform.position = new Point(currentX, currentY);
-      }
+      this.moveToPosition(currentX, currentY);
     }, this.internal.frequency);
   }
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
+  moveToPosition(x, y) {
+    const currentPosition = new Point(x, y);
+
+    if (this.internal.moveEnabler.canMove(this.internal.unit, currentPosition)) {
+      this.internal.unit.transform.position = currentPosition;
+    }
+  }
+
   moveForward() {
-    this.move(this.internal.forwardStep);
+    this.move(this.internal.forwardStep, 0);
   }
 
   moveBackward() {
-    this.move(this.internal.backwardStep);
+    this.move(this.internal.backwardStep, 0);
   }
 
   stop() {

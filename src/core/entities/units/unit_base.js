@@ -32,6 +32,13 @@ class UnitBase extends Entity {
     return this.internal.currentState;
   }
 
+  set currentState(val) {
+    this.internal.currentState = val;
+    this.internal.currentState.stateCompleted.subscribe((state) => {
+      this.currentState = state;
+    });
+  }
+
   /**
    * @param {Transform} transform
    * @param {SpriteSheet} spriteSheet
@@ -51,7 +58,7 @@ class UnitBase extends Entity {
 
     this.internal.spriteSheet = spriteSheet;
     this.internal.moveController = new MoveController(this, moveEnabler);
-    this.internal.currentState = new StanceState(this);
+    this.currentState = new StanceState(this);
   }
 
   /**
@@ -63,7 +70,7 @@ class UnitBase extends Entity {
     const newState = this.internal.currentState.handleInput(inputEventType, inputType, inputState);
 
     if (newState) {
-      this.internal.currentState = newState;
+      this.currentState = newState;
     }
   }
 }

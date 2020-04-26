@@ -6,6 +6,8 @@ import Observable from '../../../observable';
  * @typedef {import('../../../player/input_event_type').default} InputEventType
  * @typedef {import('../../../player/input_type').default} InputType
  * @typedef {import('../../../player/input_state').default} InputState
+ * @typedef {import('../../../game_space/timer_service').default} TimerService
+ * @typedef {import('../../../converters/coordinate_converter').default} CoordinateConverter
  */
 class StateBase {
   get stateCompleted() {
@@ -20,6 +22,8 @@ class StateBase {
     /**
      * @type {{
      * stateFactory: StateFactory,
+     * movingTimerService: TimerService,
+     * coordinateConverter: CoordinateConverter,
      * lastInputState: InputState,
      * stateCompleted: Observable
      * }}
@@ -27,6 +31,8 @@ class StateBase {
     this.internal = {};
 
     this.unit = stateFactory.internal.unit;
+    this.internal.movingTimerService = stateFactory.internal.movingTimerService;
+    this.internal.coordinateConverter = stateFactory.internal.coordinateConverter;
     this.internal.stateFactory = stateFactory;
     this.internal.lastInputState = lastInputState;
 

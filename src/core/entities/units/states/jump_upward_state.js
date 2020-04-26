@@ -1,6 +1,4 @@
 import StateBase from './state_base';
-import CoordinateConverter from '../../../converters/coordinate_converter';
-import TimerService from '../../../game_space/timer_service';
 import UpwardMotion from '../../../game_space/motions/upward_motion';
 import UpwardUnitAction from '../actions/upward_unit_action';
 
@@ -12,12 +10,9 @@ import UpwardUnitAction from '../actions/upward_unit_action';
  */
 class JumpUpwardState extends StateBase {
   promote() {
-    const coordinateConverter = new CoordinateConverter(1185, 254);
-    // todo: move TimeService to separated method to this method can be transfered to MoveController
-    const timeService = new TimerService();
-
+    // todo: move scalar value above into some constants
     const upwardMotion = new UpwardMotion(this.unit.moveController,
-      coordinateConverter, timeService, this.unit.transform, 50);
+      this.internal.coordinateConverter, this.internal.movingTimerService, this.unit.transform, 50);
 
     const upwardUnitAction = new UpwardUnitAction(this.unit.spriteSheet, upwardMotion);
     upwardUnitAction.execute().then(() => this.promoted());

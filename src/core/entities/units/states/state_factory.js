@@ -7,19 +7,27 @@ import WalkBackwardState from './walk_backward_state';
  * @typedef {import('../unit_base').default} UnitBase
  * @typedef {import('../../../player/input_state').default} InputState
  * @typedef {import('./state_base').default} StateBase
+ * @typedef {import('../../../game_space/timer_service').default} TimerService
+ * @typedef {import('../../../converters/coordinate_converter').default} CoordinateConverter
  */
 class StateFactory {
   /**
    * @param {UnitBase} unit
+   * @param {TimerService} movingTimerService
+   * @param {CoordinateConverter} coordinateConverter
    */
-  constructor(unit) {
+  constructor(unit, movingTimerService, coordinateConverter) {
     /**
      * @type {{
-     * unit: UnitBase}}
+     * unit: UnitBase,
+     * movingTimerService: TimerService,
+     * coordinateConverter: CoordinateConverter}}
      */
     this.internal = {};
 
     this.internal.unit = unit;
+    this.internal.movingTimerService = movingTimerService;
+    this.internal.coordinateConverter = coordinateConverter;
   }
 
   /**

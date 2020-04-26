@@ -30,13 +30,13 @@ class StateFactory {
     let state;
 
     if (inputState.forward) {
-      state = new WalkForwardState(this.internal.unit, inputState);
+      state = new WalkForwardState(this.internal.unit, this, inputState);
     } else if (inputState.backward) {
-      state = new WalkBackwardState(this.internal.unit, inputState);
+      state = new WalkBackwardState(this.internal.unit, this, inputState);
     } else if (inputState.upward) {
-      state = new JumpUpwardState(this.internal.unit, inputState);
+      state = new JumpUpwardState(this.internal.unit, this, inputState);
     } else {
-      state = new StanceState(this.internal.unit, inputState);
+      state = new StanceState(this.internal.unit, this, inputState);
     }
 
     return state;

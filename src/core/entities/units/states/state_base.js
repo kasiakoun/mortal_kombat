@@ -2,6 +2,7 @@ import Observable from '../../../observable';
 
 /**
  * @typedef {import('../unit_base').default} UnitBase
+ * @typedef {import('./state_factory').default} StateFactory
  * @typedef {import('../../../player/input_event_type').default} InputEventType
  * @typedef {import('../../../player/input_type').default} InputType
  * @typedef {import('../../../player/input_state').default} InputState
@@ -13,11 +14,13 @@ class StateBase {
 
   /**
    * @param {UnitBase} unit
+   * @param {StateFactory} stateFactory
    * @param {InputState} [lastInputState]
    */
-  constructor(unit, lastInputState) {
+  constructor(unit, stateFactory, lastInputState) {
     /**
      * @type {{
+     * stateFactory: StateFactory,
      * lastInputState: InputState,
      * stateCompleted: Observable
      * }}
@@ -25,6 +28,7 @@ class StateBase {
     this.internal = {};
 
     this.unit = unit;
+    this.internal.stateFactory = stateFactory;
     this.internal.lastInputState = lastInputState;
 
     this.internal.stateCompleted = new Observable();
@@ -33,17 +37,6 @@ class StateBase {
 
   promote() {
     throw new Error(`promote is not implemented in '${this.constructor.name}' class`);
-  }
-
-  /**
-   * @param {InputEventType} inputEventType
-   * @param {InputType} inputType
-   * @param {InputState} inputState
-   * @returns {StateBase} Returns a new state on a basis of input data otherwise returns undefined
-   */
-  // eslint-disable-next-line no-unused-vars
-  handleInput(inputEventType, inputType, inputState) {
-    this.internal.lastInputState = inputState;
   }
 }
 

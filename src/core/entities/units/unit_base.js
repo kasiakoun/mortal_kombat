@@ -1,6 +1,8 @@
 import MoveController from '../../game_space/move_controller';
 import Entity from '../entity';
-import StanceState from './states/stance_state';
+import StateFactory from './states/state_factory';
+import CoordinateConverter from '../../converters/coordinate_converter';
+import TimerService from '../../game_space/timer_service';
 
 /**
  * A base class for units
@@ -57,8 +59,14 @@ class UnitBase extends Entity {
     this.internal = Object.assign({}, this.internal);
 
     this.internal.spriteSheet = spriteSheet;
-    this.internal.moveController = new MoveController(this, moveEnabler);
-    this.currentState = new StanceState(this);
+    const movingTimerService = new TimerService();
+    this.internal.moveController = new MoveController(this, moveEnabler, movingTimerService);
+
+    // todo: move initialization of this variable above
+    const coordinateConverter = new CoordinateConverter(1185, 254);
+
+    const stateFactory = new StateFactory(this, movingTimerService, coordinateConverter);
+    this.currentState = stateFactory.createInitialState();
   }
 
   /**

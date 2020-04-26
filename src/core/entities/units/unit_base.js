@@ -1,6 +1,5 @@
 import MoveController from '../../game_space/move_controller';
 import Entity from '../entity';
-import StanceState from './states/stance_state';
 import StateFactory from './states/state_factory';
 
 /**
@@ -61,7 +60,7 @@ class UnitBase extends Entity {
     this.internal.moveController = new MoveController(this, moveEnabler);
 
     const stateFactory = new StateFactory(this);
-    this.currentState = new StanceState(this, stateFactory);
+    this.currentState = stateFactory.createInitialState();
   }
 
   /**

@@ -13,11 +13,10 @@ class StateBase {
   }
 
   /**
-   * @param {UnitBase} unit
    * @param {StateFactory} stateFactory
    * @param {InputState} [lastInputState]
    */
-  constructor(unit, stateFactory, lastInputState) {
+  constructor(stateFactory, lastInputState) {
     /**
      * @type {{
      * stateFactory: StateFactory,
@@ -27,7 +26,7 @@ class StateBase {
      */
     this.internal = {};
 
-    this.unit = unit;
+    this.unit = stateFactory.internal.unit;
     this.internal.stateFactory = stateFactory;
     this.internal.lastInputState = lastInputState;
 

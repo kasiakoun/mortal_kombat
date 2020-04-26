@@ -8,6 +8,7 @@ const Animations = Object.freeze({
   walkForward: 'walk_forward',
   walkBackward: 'walk_backward',
   jumpUpward: 'jump_upward',
+  sit: 'sit',
 });
 
 export default Animations;

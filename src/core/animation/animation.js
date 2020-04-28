@@ -73,7 +73,7 @@ class Animation {
   play() {
     if (this.internal.timer) return;
 
-    this.currentFrame = undefined;
+    this.internal.currentFrame = undefined;
     this.runAnimationByTimer();
   }
 
@@ -104,7 +104,7 @@ class Animation {
           nextFrameIndex = 0;
         } else {
           this.stop();
-          this.currentFrame = undefined;
+          this.internal.currentFrame = undefined;
 
           return false;
         }

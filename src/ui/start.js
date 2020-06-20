@@ -45,7 +45,7 @@ function start() {
   const unitFactory = new UnitFactory(collisionDetector, moveEnabler);
   const leftUnitinitialPosition = new Point(60, 100);
   const leftUnit = unitFactory.createUnit(Units.cyrax, leftUnitinitialPosition);
-  leftUnit.spriteSheet.playAnimation(Animations.stance);
+  leftUnit.spriteSheet.playForwardAnimation(Animations.stance);
   cameraController.addUnit(leftUnit);
 
   const leftPlayerInput = new PlayerInput(leftUnit);

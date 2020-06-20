@@ -9,7 +9,7 @@ import InputType from '../../../player/input_type';
  */
 class WalkBackwardState extends StateBase {
   promote() {
-    this.unit.spriteSheet.playAnimation(Animations.walkBackward);
+    this.unit.spriteSheet.playForwardAnimation(Animations.walkBackward);
     this.unit.moveController.moveBackward();
   }
 

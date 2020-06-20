@@ -9,7 +9,7 @@ import InputEventType from '../../../player/input_event_type';
  */
 class StanceState extends StateBase {
   promote() {
-    this.unit.spriteSheet.playAnimation(Animations.stance);
+    this.unit.spriteSheet.playForwardAnimation(Animations.stance);
     this.unit.moveController.stop();
   }
 

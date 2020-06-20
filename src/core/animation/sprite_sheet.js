@@ -48,17 +48,32 @@ class SpriteSheet {
   }
 
   /**
-   * Play animation by animation name
    * @param {Animations} animationName
+   * @returns {Animation}
    */
-  playAnimation(animationName) {
+  findAnimation(animationName) {
     if (this.internal.currentAnimation) this.internal.currentAnimation.stop();
 
     const animation = this.internal.animations.find(p => p.name === animationName);
     if (!animation) throw new Error(`Animation '${animationName}' did not found`);
 
-    this.internal.currentAnimation = animation;
-    animation.play();
+    return animation;
+  }
+
+  /**
+   * @param {Animations} animationName
+   */
+  playForwardAnimation(animationName) {
+    this.internal.currentAnimation = this.findAnimation(animationName);
+    this.internal.currentAnimation.playForward();
+  }
+
+  /**
+   * @param {Animations} animationName
+   */
+  playBackwardAnimation(animationName) {
+    this.internal.currentAnimation = this.findAnimation(animationName);
+    this.internal.currentAnimation.playBackward();
   }
 }
 

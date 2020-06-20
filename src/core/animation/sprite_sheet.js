@@ -62,18 +62,20 @@ class SpriteSheet {
 
   /**
    * @param {Animations} animationName
+   * @returns {Promise}
    */
   playForwardAnimation(animationName) {
     this.internal.currentAnimation = this.findAnimation(animationName);
-    this.internal.currentAnimation.playForward();
+    return this.internal.currentAnimation.playForward();
   }
 
   /**
    * @param {Animations} animationName
+   * @returns {Promise}
    */
   playBackwardAnimation(animationName) {
     this.internal.currentAnimation = this.findAnimation(animationName);
-    this.internal.currentAnimation.playBackward();
+    return this.internal.currentAnimation.playBackward();
   }
 }
 

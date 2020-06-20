@@ -86,24 +86,32 @@ class Animation {
 
   /**
    * @param {AnimationFrameStrategyBase} animationFrameStrategy
+   * @returns {Promise}
    */
   play(animationFrameStrategy) {
-    if (this.internal.timer) return;
+    if (this.internal.timer) return new Promise();
+
     this.internal.currentFrame = undefined;
-
     this.internal.frameStrategy = animationFrameStrategy;
-    this.runAnimationByTimer();
+
+    return new Promise(resolve => this.runAnimationByTimer(resolve));
   }
 
+  /**
+   * @returns {Promise}
+   */
   playForward() {
-    this.play(new AnimationNextFrameStrategy(this));
+    return this.play(new AnimationNextFrameStrategy(this));
   }
 
+  /**
+   * @returns {Promise}
+   */
   playBackward() {
-    this.play(new AnimationPreviousFrameStrategy(this));
+    return this.play(new AnimationPreviousFrameStrategy(this));
   }
 
-  runAnimationByTimer() {
+  runAnimationByTimer(resolve) {
     const frameRate = this.internal.frameStrategy.getFrameRate();
 
     this.internal.timer = setTimeout(() => {
@@ -112,9 +120,10 @@ class Animation {
 
       if (frame) {
         this.currentFrame = frame;
-        this.runAnimationByTimer();
+        this.runAnimationByTimer(resolve);
       } else {
         this.internal.currentFrame = frame;
+        resolve();
       }
     }, frameRate);
   }

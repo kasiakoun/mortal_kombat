@@ -33,6 +33,7 @@ class UpwardMotion extends NonCyclicMotion {
    * @returns {Point}
    */
   calculate(elapsedTime) {
+    // todo: move this 13 coefficient into another file or something like this
     const calibratedElapsedTime = elapsedTime * 13;
     let cartesianY = Physics.calculateUniformlyAcceleratedRectilinearMotion(this.internal.velocity,
       calibratedElapsedTime, this.internal.initialCartesianPosition.y);

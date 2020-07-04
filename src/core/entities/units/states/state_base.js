@@ -43,6 +43,16 @@ class StateBase {
   promote() {
     throw new Error(`promote is not implemented in '${this.constructor.name}' class`);
   }
+
+  /**
+   * @param {InputEventType} inputEventType
+   * @param {InputType} inputType
+   * @param {InputState} inputState
+   * @returns {Promise<StateBase>}
+   */
+  handleInput(inputEventType, inputType, inputState) {
+    throw new Error(`handleInput is not implemented in '${this.constructor.name}' class`);
+  }
 }
 
 export default StateBase;

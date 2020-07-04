@@ -75,10 +75,14 @@ class UnitBase extends Entity {
    * @param {InputState} inputState
    */
   handleInput(inputEventType, inputType, inputState) {
-    const newState = this.internal.currentState.handleInput(inputEventType, inputType, inputState);
+    const promise = this.internal.currentState.handleInput(inputEventType, inputType, inputState);
 
-    if (newState) {
-      this.currentState = newState;
+    if (promise) {
+      promise.then((state) => {
+        if (state) {
+          this.currentState = state;
+        }
+      });
     }
   }
 }

@@ -2,6 +2,7 @@ import StanceState from './stance_state';
 import WalkForwardState from './walk_forward_state';
 import JumpUpwardState from './jump_upward_state';
 import WalkBackwardState from './walk_backward_state';
+import SitState from './sit_state';
 
 /**
  * @typedef {import('../unit_base').default} UnitBase
@@ -43,6 +44,8 @@ class StateFactory {
       state = new WalkBackwardState(this, inputState);
     } else if (inputState.upward) {
       state = new JumpUpwardState(this, inputState);
+    } else if (inputState.downward) {
+      state = new SitState(this, inputState);
     } else {
       state = new StanceState(this, inputState);
     }

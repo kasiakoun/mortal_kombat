@@ -25,7 +25,7 @@ class UpwardUnitAction {
    * @returns {Promise}
    */
   execute() {
-    this.internal.spriteSheet.playAnimation(Animations.jumpUpward);
+    this.internal.spriteSheet.playForwardAnimation(Animations.jumpUpward);
     return this.internal.motion.start();
   }
 }

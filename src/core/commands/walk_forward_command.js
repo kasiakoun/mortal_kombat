@@ -29,7 +29,7 @@ class WalkForwardCommand extends Command {
    * Invokes the command to make a unit walk forward
    */
   execute() {
-    this.internal.spriteSheet.playAnimation(Animations.walkForward);
+    this.internal.spriteSheet.playForwardAnimation(Animations.walkForward);
     this.internal.moveController.moveForward();
   }
 }

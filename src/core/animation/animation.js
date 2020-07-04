@@ -1,7 +1,10 @@
 import Observable from '../observable';
+import AnimationNextFrameStrategy from './animation_frame_strategy/animation_next_frame_strategy';
+import AnimationPreviousFrameStrategy from './animation_frame_strategy/animation_previous_frame_strategy';
 
 /**
  * @typedef {import('./frame').default} Frame
+ * @typedef {import('./animation_frame_strategy/animation_frame_strategy_base').default} AnimationFrameStrategyBase
  */
 class Animation {
   /**
@@ -37,6 +40,18 @@ class Animation {
     return this.internal.name;
   }
 
+  get frames() {
+    return this.internal.frames;
+  }
+
+  get repeat() {
+    return this.internal.repeat;
+  }
+
+  get frameRate() {
+    return this.internal.frameRate;
+  }
+
   /**
    * @param {string} name Animation name
    * @param {Frame[]} frames Frame array
@@ -53,7 +68,8 @@ class Animation {
      * frameRate: number,
      * timer: NodeJS.Timeout,
      * name: string,
-     * currentFrameChanged: Observable
+     * currentFrameChanged: Observable,
+     * frameStrategy: AnimationFrameStrategyBase
      * }}
      */
     this.internal = {};
@@ -65,77 +81,51 @@ class Animation {
     this.internal.timer = undefined;
     this.internal.name = name;
     this.internal.currentFrameChanged = new Observable();
+    this.internal.frameStrategy = undefined;
   }
 
   /**
-   * Start/continue playing this animation
+   * @param {AnimationFrameStrategyBase} animationFrameStrategy
+   * @returns {Promise}
    */
-  play() {
-    if (this.internal.timer) return;
+  play(animationFrameStrategy) {
+    if (this.internal.timer) return new Promise();
 
-    this.currentFrame = undefined;
-    this.runAnimationByTimer();
+    this.internal.currentFrame = undefined;
+    this.internal.frameStrategy = animationFrameStrategy;
+
+    return new Promise(resolve => this.runAnimationByTimer(resolve));
   }
 
-  runAnimationByTimer() {
-    const frameRate = this.getNextFrameRate();
+  /**
+   * @returns {Promise}
+   */
+  playForward() {
+    return this.play(new AnimationNextFrameStrategy(this));
+  }
+
+  /**
+   * @returns {Promise}
+   */
+  playBackward() {
+    return this.play(new AnimationPreviousFrameStrategy(this));
+  }
+
+  runAnimationByTimer(resolve) {
+    const frameRate = this.internal.frameStrategy.getFrameRate();
 
     this.internal.timer = setTimeout(() => {
-      const isNextState = this.goToNextFrame();
+      const frame = this.internal.frameStrategy.getFrame();
       clearTimeout(this.internal.timer);
 
-      if (isNextState) {
-        this.runAnimationByTimer();
+      if (frame) {
+        this.currentFrame = frame;
+        this.runAnimationByTimer(resolve);
+      } else {
+        this.internal.currentFrame = frame;
+        resolve();
       }
     }, frameRate);
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  goToNextFrame() {
-    let nextFrameIndex;
-
-    if (this.internal.currentFrame) {
-      nextFrameIndex = this.internal.frames.indexOf(this.internal.currentFrame) + 1;
-
-      if (nextFrameIndex >= this.internal.frames.length) {
-        if (this.internal.repeat) {
-          nextFrameIndex = 0;
-        } else {
-          this.stop();
-          this.currentFrame = undefined;
-
-          return false;
-        }
-      }
-    } else {
-      nextFrameIndex = 0;
-    }
-
-    this.currentFrame = this.internal.frames[nextFrameIndex];
-
-    return true;
-  }
-
-  getNextFrameRate() {
-    const nextFrame = this.getNextFrame();
-
-    return nextFrame.frameRate !== undefined ? nextFrame.frameRate : this.internal.frameRate;
-  }
-
-  getNextFrame() {
-    let nextFrameIndex = 0;
-
-    if (this.internal.currentFrame) {
-      nextFrameIndex = this.internal.frames.indexOf(this.internal.currentFrame) + 1;
-    }
-
-    if (nextFrameIndex >= this.internal.frames.length) {
-      nextFrameIndex = 0;
-    }
-
-    return this.internal.frames[nextFrameIndex];
   }
 
   /**

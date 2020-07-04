@@ -29,7 +29,7 @@ class WalkBackwardCommand extends Command {
    * Invokes the command to make a unit walk backward
    */
   execute() {
-    this.internal.spriteSheet.playAnimation(Animations.walkBackward);
+    this.internal.spriteSheet.playForwardAnimation(Animations.walkBackward);
     this.internal.moveController.moveBackward();
   }
 }

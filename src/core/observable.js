@@ -34,7 +34,7 @@ class Observable {
       return;
     }
 
-    const foundIndex = this.observers.indexOf(func);
+    const foundIndex = this.internal.observers.indexOf(func);
     if (foundIndex < 0) {
       return;
     }

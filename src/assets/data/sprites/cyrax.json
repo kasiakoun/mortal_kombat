@@ -214,6 +214,30 @@
           "height": 119
         }
       ]
+    },
+    {
+      "name": "sit",
+      "repeatAnimation": false,
+      "frames": [
+        {
+          "x": 9,
+          "y": 3965,
+          "width": 90,
+          "height": 121
+        },
+        {
+          "x": 108,
+          "y": 3965,
+          "width": 96,
+          "height": 98
+        },
+        {
+          "x": 213,
+          "y": 3965,
+          "width": 84,
+          "height": 73
+        }
+      ]
     }
   ]
 }

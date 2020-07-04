@@ -9,7 +9,7 @@ import InputType from '../../../player/input_type';
  */
 class WalkForwardState extends StateBase {
   promote() {
-    this.unit.spriteSheet.playAnimation(Animations.walkForward);
+    this.unit.spriteSheet.playForwardAnimation(Animations.walkForward);
     this.unit.moveController.moveForward();
   }
 
@@ -17,7 +17,7 @@ class WalkForwardState extends StateBase {
    * @param {InputEventType} inputEventType
    * @param {InputType} inputType
    * @param {InputState} inputState
-   * @returns {StateBase}
+   * @returns {Promise<StateBase>}
    */
   handleInput(inputEventType, inputType, inputState) {
     let newState;
@@ -25,7 +25,7 @@ class WalkForwardState extends StateBase {
       newState = this.internal.stateFactory.createState(inputState);
     }
 
-    return newState;
+    return new Promise(resolve => resolve(newState));
   }
 }
 

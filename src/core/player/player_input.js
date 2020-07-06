@@ -18,6 +18,8 @@ class PlayerInput {
    * @param {InputType} inputType
    */
   handleInput(inputEventType, inputType) {
+    if (!inputType) return;
+
     this.currentInputState.setState(inputType, inputEventType !== InputEventType.up);
 
     this.unit.handleInput(inputEventType, inputType, this.currentInputState);

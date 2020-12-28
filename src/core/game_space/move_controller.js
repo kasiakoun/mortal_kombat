@@ -56,9 +56,11 @@ class MoveController {
    * @param {number} y
    */
   moveToPosition(x, y) {
-    const currentPosition = new Point(x, y);
-    if (this.internal.moveEnabler.canMove(this.internal.unit, currentPosition)) {
-      this.internal.unit.transform.position = currentPosition;
+    // todo: add checker for Y-coor in the future and for both of them
+    if (this.internal.moveEnabler.canMoveByX(this.internal.unit, x)) {
+      this.internal.unit.transform.position = new Point(x, y);
+    } else {
+      this.internal.unit.transform.position = new Point(this.internal.unit.transform.position.x, y);
     }
   }
 

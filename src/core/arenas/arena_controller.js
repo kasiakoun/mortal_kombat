@@ -22,13 +22,21 @@ class ArenaController {
   /**
    * @param {UnitBase} unit
    * @param {Point} position
-   * @returns {number}
+   * @returns {boolean}
    */
   isAllowChangePosition(unit, position) {
-    // debugger;
-    const leftDelta = this.internal.limit - position.x;
+    return this.isAllowChangePositionByX(unit, position.x);
+  }
 
-    const rightUnitDelta = position.x + unit.transform.width;
+  /**
+   * @param {UnitBase} unit
+   * @param {number} positionX
+   * @returns {boolean}
+   */
+  isAllowChangePositionByX(unit, positionX) {
+    const leftDelta = this.internal.limit - positionX;
+
+    const rightUnitDelta = positionX + unit.transform.width;
     const rightDelta = this.internal.arena.width - this.internal.limit - rightUnitDelta;
 
     return leftDelta < 0 && rightDelta > 0;

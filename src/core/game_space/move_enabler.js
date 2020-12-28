@@ -30,6 +30,16 @@ class MoveEnabler {
     return this.internal.cameraController.isAllowChangePosition(unit, position)
       && this.internal.arenaController.isAllowChangePosition(unit, position);
   }
+
+  /**
+   * @param {UnitBase} unit
+   * @param {number} positionX
+   * @returns {boolean}
+   */
+  canMoveByX(unit, positionX) {
+    return this.internal.cameraController.isAllowChangePositionByX(unit, positionX)
+      && this.internal.arenaController.isAllowChangePositionByX(unit, positionX);
+  }
 }
 
 export default MoveEnabler;

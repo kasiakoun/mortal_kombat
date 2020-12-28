@@ -23,26 +23,26 @@ class CameraController {
   }
 
   /**
-   * @param {Point} unitPosition
+   * @param {number} unitPositionX
    * @returns {number}
    */
-  getLeftDelta(unitPosition) {
+  getLeftDelta(unitPositionX) {
     const leftBorder = this.internal.camera.position.x
       + this.internal.limit;
-    const leftUnit = unitPosition.x;
+    const leftUnit = unitPositionX;
 
     return leftUnit - leftBorder;
   }
 
   /**
-   * @param {Point} unitPosition
+   * @param {number} unitPositionX
    * @param {number} unitWidth
    * @returns {number}
    */
-  getRightDelta(unitPosition, unitWidth) {
+  getRightDelta(unitPositionX, unitWidth) {
     const rightBorder = this.internal.camera.position.x + this.internal.camera.width
       - this.internal.limit;
-    const rightUnit = unitPosition.x + unitWidth;
+    const rightUnit = unitPositionX + unitWidth;
 
     return rightUnit - rightBorder;
   }
@@ -51,13 +51,13 @@ class CameraController {
    * @param {Transform} unitTransform
    */
   onUnitPositionChange(unitTransform) {
-    const leftDelta = this.getLeftDelta(unitTransform.position);
+    const leftDelta = this.getLeftDelta(unitTransform.position.x);
 
     if (leftDelta < 0) {
       this.internal.camera.shiftPosition(leftDelta, 0);
     }
 
-    const rightDelta = this.getRightDelta(unitTransform.position, unitTransform.width);
+    const rightDelta = this.getRightDelta(unitTransform.position.x, unitTransform.width);
 
     if (rightDelta > 0) {
       this.internal.camera.shiftPosition(rightDelta, 0);
@@ -70,11 +70,20 @@ class CameraController {
    * @returns {boolean}
    */
   isAllowChangePosition(unit, position) {
+    return this.isAllowChangePositionByX(unit, position.x);
+  }
+
+  /**
+   * @param {UnitBase} unit
+   * @param {number} positionX
+   * @returns {boolean}
+   */
+  isAllowChangePositionByX(unit, positionX) {
     const unitIndex = this.internal.units.indexOf(unit);
     if (unitIndex <= -1) throw new Error('Unit was not found in the units array');
 
-    const leftDeltaUnit = this.getLeftDelta(position);
-    const rightDeltaUnit = this.getRightDelta(position, unit.transform.width);
+    const leftDeltaUnit = this.getLeftDelta(positionX);
+    const rightDeltaUnit = this.getRightDelta(positionX, unit.transform.width);
 
     if (leftDeltaUnit > 0 && rightDeltaUnit < 0) {
       return true;
@@ -84,8 +93,8 @@ class CameraController {
     const canChange = this.internal.units.every((p, i) => {
       if (i === unitIndex) return true;
 
-      const rightDeltaAnotherUnit = this.getRightDelta(p.transform.position, p.transform.width);
-      const leftDeltaAnotherUnit = this.getLeftDelta(p.transform.position);
+      const rightDeltaAnotherUnit = this.getRightDelta(p.transform.position.x, p.transform.width);
+      const leftDeltaAnotherUnit = this.getLeftDelta(p.transform.position.x);
 
       // todo: пока оставим, как есть,
       // todo: пока не столкнёмся с большой дискретностью передвижения(например телепортация)
